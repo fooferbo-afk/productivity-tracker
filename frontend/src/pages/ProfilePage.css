@@ -1,0 +1,115 @@
+/**
+ * ProfilePage styles.
+ */
+
+.profile {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.profile__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--color-bg-card, #ffffff);
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.profile__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    background: linear-gradient(135deg, var(--color-primary, #6366f1) 0%, var(--color-primary-dark, #4f46e5) 100%);
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.profile__name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #1a1a2e);
+    margin: 0 0 0.25rem;
+}
+
+.profile__email {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+}
+
+.profile__section {
+    background: var(--color-bg-card, #ffffff);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.profile__section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted, #9ca3af);
+    margin: 0 0 0.75rem;
+}
+
+.profile__info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.profile__info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profile__info-label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #6b7280);
+}
+
+.profile__info-value {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #1a1a2e);
+    text-transform: capitalize;
+}
+
+.profile__logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.875rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #dc2626;
+    background: var(--color-bg-card, #ffffff);
+    border: 1.5px solid #fca5a5;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.profile__logout:hover {
+    background: #fef2f2;
+    border-color: #f87171;
+}
+
+.profile__logout svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}

@@ -1,0 +1,50 @@
+/**
+ * Shared page styles.
+ * 
+ * Common styles for all pages including placeholder states.
+ */
+
+.page {
+    min-height: 100%;
+}
+
+.page__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    min-height: 50vh;
+}
+
+.page__placeholder-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
+    border-radius: 1rem;
+    color: var(--color-primary, #6366f1);
+    margin-bottom: 1.5rem;
+}
+
+.page__placeholder-icon svg {
+    width: 2rem;
+    height: 2rem;
+}
+
+.page__placeholder-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary, #1a1a2e);
+    margin: 0 0 0.5rem;
+}
+
+.page__placeholder-text {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+    max-width: 280px;
+}

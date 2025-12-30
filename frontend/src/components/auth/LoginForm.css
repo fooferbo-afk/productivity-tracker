@@ -1,0 +1,202 @@
+/**
+ * LoginForm styles.
+ * 
+ * Mobile-first design with dark theme accents.
+ */
+
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.login-form__header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-form__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-text-primary, #1a1a2e);
+    margin: 0 0 0.5rem;
+}
+
+.login-form__subtitle {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary, #6b7280);
+    margin: 0;
+}
+
+.login-form__error {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: 1px solid #fca5a5;
+    border-radius: 0.5rem;
+    padding: 0.875rem 1rem;
+    margin-bottom: 1.5rem;
+    color: #dc2626;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.login-form__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.login-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.login-form__label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #1a1a2e);
+}
+
+.login-form__input {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1.5px solid var(--color-border, #e5e7eb);
+    border-radius: 0.5rem;
+    background: var(--color-bg-input, #ffffff);
+    color: var(--color-text-primary, #1a1a2e);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-form__input:focus {
+    outline: none;
+    border-color: var(--color-primary, #6366f1);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.login-form__input::placeholder {
+    color: var(--color-text-muted, #9ca3af);
+}
+
+.login-form__input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-form__submit {
+    margin-top: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--color-primary, #6366f1) 0%, var(--color-primary-dark, #4f46e5) 100%);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-form__submit:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+}
+
+.login-form__submit:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.login-form__submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-form__divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    gap: 1rem;
+}
+
+.login-form__divider::before,
+.login-form__divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-border, #e5e7eb);
+}
+
+.login-form__divider span {
+    font-size: 0.875rem;
+    color: var(--color-text-muted, #9ca3af);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.login-form__google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-primary, #1a1a2e);
+    background: var(--color-bg-secondary, #f9fafb);
+    border: 1.5px solid var(--color-border, #e5e7eb);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.login-form__google:hover:not(:disabled) {
+    background: var(--color-bg-tertiary, #f3f4f6);
+    border-color: var(--color-border-dark, #d1d5db);
+}
+
+.login-form__google:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.login-form__google-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.login-form__toggle {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary, #6b7280);
+}
+
+.login-form__toggle-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary, #6366f1);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+}
+
+.login-form__toggle-btn:hover {
+    text-decoration: underline;
+}
+
+.login-form__toggle-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (min-width: 640px) {
+    .login-form {
+        padding: 2.5rem 2rem;
+    }
+
+    .login-form__title {
+        font-size: 2rem;
+    }
+}

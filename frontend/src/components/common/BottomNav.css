@@ -1,0 +1,90 @@
+/**
+ * BottomNav styles.
+ * 
+ * Fixed bottom navigation with smooth transitions.
+ */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5rem 0.25rem;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    background: var(--color-bg-card, #ffffff);
+    border-top: 1px solid var(--color-border, #e5e7eb);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.bottom-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    min-width: 4rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    color: var(--color-text-secondary, #6b7280);
+    transition: all 0.2s ease;
+}
+
+.bottom-nav__item:hover {
+    color: var(--color-text-primary, #1a1a2e);
+    background: var(--color-bg-hover, #f3f4f6);
+}
+
+.bottom-nav__item--active {
+    color: var(--color-primary, #6366f1);
+    background: rgba(99, 102, 241, 0.08);
+}
+
+.bottom-nav__item--active:hover {
+    color: var(--color-primary, #6366f1);
+    background: rgba(99, 102, 241, 0.12);
+}
+
+.bottom-nav__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.bottom-nav__icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.bottom-nav__label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+}
+
+/* Desktop: wider touch targets */
+@media (min-width: 640px) {
+    .bottom-nav {
+        max-width: 480px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 1rem 1rem 0 0;
+    }
+
+    .bottom-nav__item {
+        min-width: 5rem;
+        padding: 0.625rem 1rem;
+    }
+}
+
+/* Large screens: hide bottom nav, could show sidebar instead */
+@media (min-width: 1024px) {
+    .bottom-nav {
+        max-width: 560px;
+    }
+}

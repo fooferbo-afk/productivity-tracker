@@ -1,0 +1,33 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./productivity.db
+      - ALLOWED_ORIGINS=http://localhost:5173
+      - ENVIRONMENT=development
+    volumes:
+      - ./backend:/app
+      - backend-data:/app/data
+    env_file:
+      - ./backend/.env
+
+volumes:
+  backend-data:
