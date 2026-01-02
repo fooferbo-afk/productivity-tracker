@@ -28,36 +28,34 @@ function formatTime(hours: number, minutes: number): string {
  * Calculate the predicted clock-out time based on productivity inputs.
  * 
  * Formula explanation:
- * If productivity target is 75% and you need 60 minutes of productive time per session:
- * - Actual time needed per session = 60 / 0.75 = 80 minutes
- * - This accounts for non-productive time (breaks, documentation, travel, etc.)
+ * Time in Facility = Total Treatment Minutes / (Productivity % / 100)
  * 
- * Total work time = (session duration / productivity %) × number of sessions
+ * Example:
+ * - 120 minutes treatment assigned
+ * - 80% productivity target
+ * - Time in Facility = 120 / 0.8 = 150 minutes
  * 
  * @param inputs - Calculator inputs
  * @returns Predicted clock-out time and metadata
  */
 export function predictClockOut(inputs: CalculatorInputs): CalculatorResult {
-    const { clockInTime, productivityPercentage, sessionDurationMinutes, totalSessionsExpected } = inputs;
+    const { clockInTime, productivityPercentage, totalTreatmentMinutes } = inputs;
 
     // Validate inputs
     if (productivityPercentage <= 0 || productivityPercentage > 100) {
         throw new Error('Productivity percentage must be between 0 and 100');
     }
-    if (sessionDurationMinutes <= 0) {
-        throw new Error('Session duration must be positive');
-    }
-    if (totalSessionsExpected <= 0) {
-        throw new Error('Number of sessions must be positive');
+    if (totalTreatmentMinutes < 0) {
+        throw new Error('Treatment minutes must be positive');
     }
 
-    // Calculate total productive time needed (in minutes)
-    const totalProductiveMinutes = sessionDurationMinutes * totalSessionsExpected;
-
-    // Calculate actual work time needed (accounting for productivity)
-    // If 75% productive, need more total time to achieve the productive minutes
+    // Calculate total time in facility needed
     const productivityDecimal = productivityPercentage / 100;
-    const totalWorkMinutes = Math.round(totalProductiveMinutes / productivityDecimal);
+
+    // Avoid division by zero (though validated above)
+    if (productivityDecimal === 0) return { clockOutTime: clockInTime, crossesMidnight: false, totalWorkMinutes: 0 };
+
+    const totalWorkMinutes = Math.round(totalTreatmentMinutes / productivityDecimal);
 
     // Parse clock-in time
     const clockIn = parseTime(clockInTime);
@@ -105,15 +103,9 @@ export function validateInputs(inputs: Partial<CalculatorInputs>): Record<string
         }
     }
 
-    if (inputs.sessionDurationMinutes !== undefined) {
-        if (inputs.sessionDurationMinutes < 5 || inputs.sessionDurationMinutes > 180) {
-            errors.sessionDurationMinutes = 'Session duration must be between 5 and 180 minutes';
-        }
-    }
-
-    if (inputs.totalSessionsExpected !== undefined) {
-        if (inputs.totalSessionsExpected < 1 || inputs.totalSessionsExpected > 20) {
-            errors.totalSessionsExpected = 'Number of sessions must be between 1 and 20';
+    if (inputs.totalTreatmentMinutes !== undefined) {
+        if (inputs.totalTreatmentMinutes < 0 || inputs.totalTreatmentMinutes > 720) { // Max 12 hours reasonably
+            errors.totalTreatmentMinutes = 'Treatment minutes must be between 0 and 720';
         }
     }
 
@@ -125,9 +117,8 @@ export function validateInputs(inputs: Partial<CalculatorInputs>): Record<string
  */
 export const DEFAULT_INPUTS: CalculatorInputs = {
     clockInTime: '08:00',
-    productivityPercentage: 75,
-    sessionDurationMinutes: 45,
-    totalSessionsExpected: 8,
+    productivityPercentage: 100, // Default to 100% per requirements
+    totalTreatmentMinutes: 240, // Default 4 hours
 };
 
 /**

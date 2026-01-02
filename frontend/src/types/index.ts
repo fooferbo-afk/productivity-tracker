@@ -63,6 +63,7 @@ export interface Session {
     start_time: string;   // Time string (HH:MM:SS)
     end_time: string;     // Time string (HH:MM:SS)
     productivity_percentage: number;
+    total_treatment_minutes: number;
     notes: string | null;
     duration_minutes: number;
     created_at: string;
@@ -109,8 +110,7 @@ export interface SessionSummary {
 export interface CalculatorInputs {
     clockInTime: string;          // Time string (HH:MM)
     productivityPercentage: number;
-    sessionDurationMinutes: number;
-    totalSessionsExpected: number;
+    totalTreatmentMinutes: number;
 }
 
 export interface CalculatorResult {

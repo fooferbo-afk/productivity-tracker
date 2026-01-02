@@ -28,6 +28,11 @@ class SessionBase(BaseModel):
         max_length=1000,
         description="Optional session notes",
     )
+    total_treatment_minutes: Optional[int] = Field(
+        0,
+        ge=0,
+        description="Total assigned treatment minutes"
+    )
 
     @field_validator("productivity_percentage", mode="before")
     @classmethod
@@ -57,6 +62,11 @@ class SessionUpdate(BaseModel):
         description="Productivity percentage (0-100)",
     )
     facility_id: Optional[str] = Field(None, description="Facility ID")
+    total_treatment_minutes: Optional[int] = Field(
+        None,
+        ge=0,
+        description="Total assigned treatment minutes"
+    )
     notes: Optional[str] = Field(
         None,
         max_length=1000,
@@ -79,6 +89,7 @@ class SessionResponse(SessionBase):
     therapist_id: str = Field(..., description="Owning therapist ID")
     facility_id: str = Field(..., description="Associated facility ID")
     facility_name: Optional[str] = Field(None, description="Facility name for display")
+    total_treatment_minutes: Optional[int] = Field(0, description="Total assigned treatment minutes")
     duration_minutes: int = Field(..., description="Session duration in minutes")
     created_at: datetime = Field(..., description="Creation timestamp")
     updated_at: datetime = Field(..., description="Last update timestamp")

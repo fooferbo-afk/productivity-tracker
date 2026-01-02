@@ -91,6 +91,13 @@ class Session(Base):
         nullable=True,
     )
 
+    # Treatment Minutes (New field for productivity calculation)
+    total_treatment_minutes: Mapped[Optional[int]] = mapped_column(
+        nullable=True,
+        default=0,
+        comment="Total minutes of treatment assigned/completed"
+    )
+
     # Timestamps
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

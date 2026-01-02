@@ -27,17 +27,10 @@ export function CalculatorForm({ inputs, errors, onChange, onReset }: Calculator
         }
     };
 
-    const handleDurationChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleTreatmentChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(e.target.value, 10);
         if (!isNaN(value)) {
-            onChange({ ...inputs, sessionDurationMinutes: value });
-        }
-    };
-
-    const handleSessionsChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value, 10);
-        if (!isNaN(value)) {
-            onChange({ ...inputs, totalSessionsExpected: value });
+            onChange({ ...inputs, totalTreatmentMinutes: value });
         }
     };
 
@@ -69,6 +62,29 @@ export function CalculatorForm({ inputs, errors, onChange, onReset }: Calculator
                 />
                 {errors.clockInTime && (
                     <span className="calculator-form__error">{errors.clockInTime}</span>
+                )}
+            </div>
+
+            {/* Total Treatment Minutes */}
+            <div className="calculator-form__field">
+                <label htmlFor="treatmentMinutes" className="calculator-form__label">
+                    Total Treatment Minutes (Assigned)
+                </label>
+                <div className="calculator-form__inline">
+                    <input
+                        type="number"
+                        id="treatmentMinutes"
+                        className={`calculator-form__input calculator-form__input--small ${errors.totalTreatmentMinutes ? 'calculator-form__input--error' : ''}`}
+                        value={inputs.totalTreatmentMinutes}
+                        onChange={handleTreatmentChange}
+                        min={0}
+                        max={720}
+                        step={15}
+                    />
+                    <span className="calculator-form__suffix">minutes</span>
+                </div>
+                {errors.totalTreatmentMinutes && (
+                    <span className="calculator-form__error">{errors.totalTreatmentMinutes}</span>
                 )}
             </div>
 
@@ -111,47 +127,6 @@ export function CalculatorForm({ inputs, errors, onChange, onReset }: Calculator
                 </div>
                 {errors.productivityPercentage && (
                     <span className="calculator-form__error">{errors.productivityPercentage}</span>
-                )}
-            </div>
-
-            {/* Session duration */}
-            <div className="calculator-form__field">
-                <label htmlFor="duration" className="calculator-form__label">
-                    Session Duration
-                </label>
-                <div className="calculator-form__inline">
-                    <input
-                        type="number"
-                        id="duration"
-                        className={`calculator-form__input calculator-form__input--small ${errors.sessionDurationMinutes ? 'calculator-form__input--error' : ''}`}
-                        value={inputs.sessionDurationMinutes}
-                        onChange={handleDurationChange}
-                        min={5}
-                        max={180}
-                    />
-                    <span className="calculator-form__suffix">minutes</span>
-                </div>
-                {errors.sessionDurationMinutes && (
-                    <span className="calculator-form__error">{errors.sessionDurationMinutes}</span>
-                )}
-            </div>
-
-            {/* Total sessions */}
-            <div className="calculator-form__field">
-                <label htmlFor="sessions" className="calculator-form__label">
-                    Expected Sessions
-                </label>
-                <input
-                    type="number"
-                    id="sessions"
-                    className={`calculator-form__input calculator-form__input--small ${errors.totalSessionsExpected ? 'calculator-form__input--error' : ''}`}
-                    value={inputs.totalSessionsExpected}
-                    onChange={handleSessionsChange}
-                    min={1}
-                    max={20}
-                />
-                {errors.totalSessionsExpected && (
-                    <span className="calculator-form__error">{errors.totalSessionsExpected}</span>
                 )}
             </div>
 
