@@ -11,9 +11,8 @@ from typing import Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# Get the directory where this config file is located
+# Get the directory where this config file is =located
 _BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
