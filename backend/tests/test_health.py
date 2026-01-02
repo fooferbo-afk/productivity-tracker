@@ -13,4 +13,4 @@ async def test_health_check():
         response = await ac.get("/health")
     
     assert response.status_code == 200
-    assert response.json() == {"status": "healthy", "database": "connected"}
+    assert response.json() == {"status": "healthy", "version": "0.1.0"}
