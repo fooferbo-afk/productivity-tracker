@@ -15,8 +15,15 @@ settings = get_settings()
 # Create async engine
 # For SQLite: sqlite+aiosqlite:///./productivity.db
 # For MySQL:  mysql+aiomysql://user:pass@host/db
+# Fix Render/Heroku database URL for asyncpg
+db_url = settings.database_url
+if db_url and db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql+asyncpg://", 1)
+elif db_url and db_url.startswith("postgresql://"):
+    db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+
 engine = create_async_engine(
-    settings.database_url,
+    db_url,
     echo=settings.is_development,  # Log SQL in development
     future=True,
 )
