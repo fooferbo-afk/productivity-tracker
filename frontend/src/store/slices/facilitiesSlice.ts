@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import { get, post, put, type ApiError } from '../../api/client';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { get, post, put } from '../../api/client';
 import type { Facility, FacilityCreate, FacilityUpdate, FacilityListResponse } from '../../types';
 import type { RootState } from '../index';
 

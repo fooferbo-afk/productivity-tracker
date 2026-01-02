@@ -5,9 +5,9 @@
  * Supports date range and facility filtering.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setFilters, fetchSessions, fetchSessionSummary, selectSessionFilters } from '../../store/slices/sessionsSlice';
+import { setFilters, selectSessionFilters } from '../../store/slices/sessionsSlice';
 import { selectFacilities, fetchFacilities } from '../../store/slices/facilitiesSlice';
 import './HistoryFilterBar.css';
 

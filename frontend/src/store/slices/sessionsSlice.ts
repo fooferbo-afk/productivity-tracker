@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { get, post } from '../../api/client';
-import type { Session, SessionListResponse, SessionSummary, SessionFilters, SessionCreate } from '../../types';
+import { get, post, put, del } from '../../api/client';
+import type { Session, SessionListResponse, SessionSummary, SessionFilters, SessionCreate, SessionUpdate } from '../../types';
 import type { RootState } from '../index';
 
 interface SessionsState {

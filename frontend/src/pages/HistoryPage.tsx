@@ -21,7 +21,7 @@ import { SummaryStats } from '../components/history/SummaryStats';
 import { SessionFormModal } from '../components/sessions/SessionFormModal';
 import { HistoryFilterBar } from '../components/history/HistoryFilterBar';
 import { ConfirmDialog } from '../components/common/ConfirmDialog';
-import type { Session } from '../../types';
+import type { Session } from '../types';
 import './HistoryPage.css';
 
 export function HistoryPage() {
