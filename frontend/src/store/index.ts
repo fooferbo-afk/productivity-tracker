@@ -6,10 +6,14 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
+import facilitiesReducer from './slices/facilitiesSlice';
+import sessionsReducer from './slices/sessionsSlice';
 
 export const store = configureStore({
     reducer: {
         auth: authReducer,
+        facilities: facilitiesReducer,
+        sessions: sessionsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

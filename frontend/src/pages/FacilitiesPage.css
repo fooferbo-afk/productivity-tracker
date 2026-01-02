@@ -1,0 +1,120 @@
+/**
+ * Facilities page styles.
+ */
+
+.facilities-page {
+    padding: var(--space-4);
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.facilities-page__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-6);
+}
+
+.facilities-page__title {
+    font-size: var(--font-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 var(--space-2);
+}
+
+.facilities-page__subtitle {
+    font-size: var(--font-base);
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.facilities-page__add-btn {
+    background: var(--primary);
+    color: white;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    border: none;
+    transition: all var(--transition-fast);
+}
+
+.facilities-page__add-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.facilities-page__loading {
+    text-align: center;
+    padding: var(--space-8);
+    color: var(--text-secondary);
+}
+
+.facilities-page__error {
+    background: #fee2e2;
+    color: #ef4444;
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-6);
+    text-align: center;
+}
+
+.facilities-page__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-4);
+}
+
+.facilities-page__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-8);
+    background: var(--surface-secondary);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--border-color);
+    margin-top: var(--space-4);
+}
+
+.facilities-page__empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-4);
+    opacity: 0.5;
+}
+
+.facilities-page__empty h3 {
+    margin: 0 0 var(--space-2);
+    color: var(--text-primary);
+}
+
+.facilities-page__empty p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-6);
+}
+
+.facilities-page__empty-btn {
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.facilities-page__empty-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .facilities-page__header {
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .facilities-page__add-btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,179 @@
+/**
+ * Session card styles.
+ */
+
+.session-card {
+    background: var(--surface-primary);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    /* Very subtle border */
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all var(--transition-fast);
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    /* Soft ambient shadow */
+}
+
+.session-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border-color: var(--color-primary-light);
+}
+
+.session-card__left {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.session-card__date-badge {
+    background: var(--surface-secondary);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+}
+
+.session-card__month {
+    font-size: var(--font-xs);
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.session-card__day {
+    font-size: var(--font-xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.session-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.session-card__facility {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: var(--font-base);
+}
+
+.session-card__time {
+    color: var(--text-secondary);
+    font-size: var(--font-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.session-card__duration {
+    background: var(--surface-secondary);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+}
+
+.session-card__right {
+    text-align: right;
+}
+
+.session-card__productivity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.session-card__prod-value {
+    font-size: var(--font-lg);
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.session-card__prod-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+}
+
+.session-card__notes-indicator {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    font-size: 0.8rem;
+    opacity: 0.5;
+    cursor: help;
+}
+
+/* Actions */
+.session-card__actions {
+    display: flex;
+    gap: var(--space-2);
+    margin-left: var(--space-4);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.session-card:hover .session-card__actions {
+    opacity: 1;
+}
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: var(--space-1);
+    border-radius: var(--radius-sm);
+    opacity: 0.6;
+    transition: all var(--transition-fast);
+}
+
+.icon-btn:hover {
+    opacity: 1;
+    background: var(--surface-secondary);
+    transform: scale(1.1);
+}
+
+.edit-btn:hover {
+    color: var(--primary);
+}
+
+.delete-btn:hover {
+    color: var(--danger);
+}
+
+/* Response */
+@media (max-width: 480px) {
+    .session-card {
+        padding: var(--space-3);
+        flex-wrap: wrap;
+        /* Allow wrapping on very small screens */
+    }
+
+    .session-card__actions {
+        opacity: 1;
+        /* Always show on mobile */
+        margin-left: auto;
+        /* Push to right */
+        padding-top: var(--space-2);
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .session-card__date-badge {
+        min-width: 50px;
+        padding: var(--space-1) var(--space-2);
+    }
+
+    .session-card__day {
+        font-size: var(--font-lg);
+    }
+}

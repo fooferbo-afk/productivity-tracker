@@ -46,6 +46,10 @@ class FacilityUpdate(BaseModel):
         max_length=500,
         description="Facility location",
     )
+    is_archived: Optional[bool] = Field(
+        None,
+        description="Archive status",
+    )
 
 
 class FacilityResponse(FacilityBase):

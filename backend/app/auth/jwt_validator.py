@@ -116,13 +116,29 @@ async def get_current_therapist(
 
     if therapist is None:
         # First-time login - create therapist record
-        therapist = Therapist(
-            firebase_uid=token_payload.uid,
-            email=token_payload.email or "",
-            name=token_payload.name or "Therapist",
-        )
-        db.add(therapist)
-        await db.flush()  # Get the ID without committing
+        try:
+            therapist = Therapist(
+                firebase_uid=token_payload.uid,
+                email=token_payload.email or "",
+                name=token_payload.name or "Therapist",
+            )
+            db.add(therapist)
+            await db.flush()  # Get the ID without committing
+        except Exception: 
+            # Handle race condition - user might have been created by concurrent request
+            # We catch generic Exception because IntegrityError might be wrapped
+            await db.rollback()
+            result = await db.execute(
+                select(Therapist).where(Therapist.firebase_uid == token_payload.uid)
+            )
+            therapist = result.scalar_one_or_none()
+            
+            if therapist is None:
+                # Still failed? Re-raise
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail="Could not create user profile",
+                )
 
     return therapist
 
