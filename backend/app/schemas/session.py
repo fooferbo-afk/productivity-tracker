@@ -33,6 +33,11 @@ class SessionBase(BaseModel):
         ge=0,
         description="Total assigned treatment minutes"
     )
+    lunch_minutes: Optional[int] = Field(
+        0,
+        ge=0,
+        description="Lunch or break minutes"
+    )
 
     @field_validator("productivity_percentage", mode="before")
     @classmethod
@@ -90,6 +95,7 @@ class SessionResponse(SessionBase):
     facility_id: str = Field(..., description="Associated facility ID")
     facility_name: Optional[str] = Field(None, description="Facility name for display")
     total_treatment_minutes: Optional[int] = Field(0, description="Total assigned treatment minutes")
+    lunch_minutes: Optional[int] = Field(0, description="Lunch or break minutes")
     duration_minutes: int = Field(..., description="Session duration in minutes")
     created_at: datetime = Field(..., description="Creation timestamp")
     updated_at: datetime = Field(..., description="Last update timestamp")

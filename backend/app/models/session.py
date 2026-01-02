@@ -98,6 +98,13 @@ class Session(Base):
         comment="Total minutes of treatment assigned/completed"
     )
 
+    # Lunch Minutes (Optional break time)
+    lunch_minutes: Mapped[Optional[int]] = mapped_column(
+        nullable=True,
+        default=0,
+        comment="Minutes taken for lunch/break"
+    )
+
     # Timestamps
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

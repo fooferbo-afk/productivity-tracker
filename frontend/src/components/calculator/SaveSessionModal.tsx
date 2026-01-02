@@ -72,6 +72,7 @@ export function SaveSessionModal({ isOpen, onClose, inputs, result }: SaveSessio
                 end_time: result.clockOutTime + ':00',
                 productivity_percentage: inputs.productivityPercentage,
                 total_treatment_minutes: inputs.totalTreatmentMinutes,
+                lunch_minutes: inputs.lunchMinutes,
                 notes: notes.trim() || undefined
             };
 

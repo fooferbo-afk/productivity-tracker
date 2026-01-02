@@ -39,7 +39,7 @@ function formatTime(hours: number, minutes: number): string {
  * @returns Predicted clock-out time and metadata
  */
 export function predictClockOut(inputs: CalculatorInputs): CalculatorResult {
-    const { clockInTime, productivityPercentage, totalTreatmentMinutes } = inputs;
+    const { clockInTime, productivityPercentage, totalTreatmentMinutes, lunchMinutes } = inputs;
 
     // Validate inputs
     if (productivityPercentage <= 0 || productivityPercentage > 100) {
@@ -48,20 +48,26 @@ export function predictClockOut(inputs: CalculatorInputs): CalculatorResult {
     if (totalTreatmentMinutes < 0) {
         throw new Error('Treatment minutes must be positive');
     }
+    if (lunchMinutes < 0) {
+        throw new Error('Lunch minutes must be positive');
+    }
 
-    // Calculate total time in facility needed
+    // Calculate total time in facility needed for TREATMENT
     const productivityDecimal = productivityPercentage / 100;
 
     // Avoid division by zero (though validated above)
     if (productivityDecimal === 0) return { clockOutTime: clockInTime, crossesMidnight: false, totalWorkMinutes: 0 };
 
-    const totalWorkMinutes = Math.round(totalTreatmentMinutes / productivityDecimal);
+    const workMinutesForTreatment = Math.round(totalTreatmentMinutes / productivityDecimal);
+
+    // Total time = Work Time + Lunch Time (Dead time)
+    const totalMinutesAtFacility = workMinutesForTreatment + lunchMinutes;
 
     // Parse clock-in time
     const clockIn = parseTime(clockInTime);
 
     // Calculate clock-out time
-    let totalMinutesFromMidnight = clockIn.hours * 60 + clockIn.minutes + totalWorkMinutes;
+    let totalMinutesFromMidnight = clockIn.hours * 60 + clockIn.minutes + totalMinutesAtFacility;
 
     // Check if crosses midnight
     const crossesMidnight = totalMinutesFromMidnight >= 24 * 60;
@@ -78,7 +84,7 @@ export function predictClockOut(inputs: CalculatorInputs): CalculatorResult {
     return {
         clockOutTime: formatTime(clockOutHours, clockOutMinutes),
         crossesMidnight,
-        totalWorkMinutes,
+        totalWorkMinutes: totalMinutesAtFacility,
     };
 }
 
@@ -109,6 +115,12 @@ export function validateInputs(inputs: Partial<CalculatorInputs>): Record<string
         }
     }
 
+    if (inputs.lunchMinutes !== undefined) {
+        if (inputs.lunchMinutes < 0 || inputs.lunchMinutes > 120) {
+            errors.lunchMinutes = 'Lunch minutes must be between 0 and 120';
+        }
+    }
+
     return errors;
 }
 
@@ -119,6 +131,7 @@ export const DEFAULT_INPUTS: CalculatorInputs = {
     clockInTime: '08:00',
     productivityPercentage: 100, // Default to 100% per requirements
     totalTreatmentMinutes: 240, // Default 4 hours
+    lunchMinutes: 30, // Default 30 min lunch
 };
 
 /**

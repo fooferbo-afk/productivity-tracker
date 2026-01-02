@@ -88,6 +88,32 @@ export function CalculatorForm({ inputs, errors, onChange, onReset }: Calculator
                 )}
             </div>
 
+            {/* Lunch Minutes */}
+            <div className="calculator-form__field">
+                <label htmlFor="lunchMinutes" className="calculator-form__label">
+                    Lunch / Break Minutes
+                </label>
+                <div className="calculator-form__inline">
+                    <input
+                        type="number"
+                        id="lunchMinutes"
+                        className={`calculator-form__input calculator-form__input--small ${errors.lunchMinutes ? 'calculator-form__input--error' : ''}`}
+                        value={inputs.lunchMinutes}
+                        onChange={(e) => {
+                            const val = parseInt(e.target.value, 10);
+                            if (!isNaN(val)) onChange({ ...inputs, lunchMinutes: val });
+                        }}
+                        min={0}
+                        max={120}
+                        step={5}
+                    />
+                    <span className="calculator-form__suffix">minutes</span>
+                </div>
+                {errors.lunchMinutes && (
+                    <span className="calculator-form__error">{errors.lunchMinutes}</span>
+                )}
+            </div>
+
             {/* Productivity percentage */}
             <div className="calculator-form__field">
                 <label htmlFor="productivity" className="calculator-form__label">

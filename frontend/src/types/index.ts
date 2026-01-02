@@ -111,6 +111,7 @@ export interface CalculatorInputs {
     clockInTime: string;          // Time string (HH:MM)
     productivityPercentage: number;
     totalTreatmentMinutes: number;
+    lunchMinutes: number;
 }
 
 export interface CalculatorResult {
