@@ -41,5 +41,6 @@ jobs:
         # Use an in-memory SQLite DB for tests to avoid needing a real Postgres service
         DATABASE_URL: "sqlite+aiosqlite:///:memory:"
         ENVIRONMENT: "testing"
+        PYTHONPATH: .
       run: |
         pytest
