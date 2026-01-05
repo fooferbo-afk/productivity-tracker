@@ -59,6 +59,23 @@
     font-size: var(--font-sm);
 }
 
+.calculator-form__select {
+    padding: var(--space-2) var(--space-4);
+    background: var(--surface-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    color: var(--text-primary);
+    font-size: var(--font-sm);
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.calculator-form__select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
 /* Stepper for productivity */
 .calculator-form__stepper {
     display: flex;

@@ -4,7 +4,7 @@
  * Input form for productivity calculator with real-time validation.
  */
 
-import { type ChangeEvent } from 'react';
+import { useState, type ChangeEvent, useEffect } from 'react';
 import type { CalculatorInputs } from '../../types';
 import './CalculatorForm.css';
 
@@ -15,7 +15,62 @@ interface CalculatorFormProps {
     onReset: () => void;
 }
 
+type TimeUnit = 'minutes' | 'hours';
+
 export function CalculatorForm({ inputs, errors, onChange, onReset }: CalculatorFormProps) {
+    const [treatmentUnit, setTreatmentUnit] = useState<TimeUnit>('minutes');
+    const [lunchUnit, setLunchUnit] = useState<TimeUnit>('minutes');
+
+    // Local state to handle input text (avoids "dot" loss issue and allows empty state)
+    const [treatmentInput, setTreatmentInput] = useState(inputs.totalTreatmentMinutes.toString());
+    const [lunchInput, setLunchInput] = useState(inputs.lunchMinutes.toString());
+
+    // Sync local state when props change externally (e.g. Reset), 
+    // BUT be careful not to overwrite user typing unless it's a significant change.
+    useEffect(() => {
+        const currentMinutes = inputs.totalTreatmentMinutes;
+        const currentVal = parseFloat(treatmentInput);
+        let calculatedPropsVal = currentVal;
+
+        if (isNaN(currentVal)) {
+            // Local is empty/invalid. If we decided not to force sync on empty, we skip unless prop is 0 (Reset)
+            // But if user cleared it, we don't want to re-fill.
+            // Check if prop matches "0" basically.
+            calculatedPropsVal = 0;
+        } else {
+            if (treatmentUnit === 'hours') calculatedPropsVal = currentVal * 60;
+        }
+
+        // Allow tolerance for float math
+        if (Math.abs(calculatedPropsVal - currentMinutes) > 0.1) {
+            const displayVal = treatmentUnit === 'hours'
+                ? (currentMinutes / 60).toString()
+                : currentMinutes.toString();
+            setTreatmentInput(displayVal);
+        }
+    }, [inputs.totalTreatmentMinutes, treatmentUnit]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    // Similar sync for lunch Minutes
+    useEffect(() => {
+        const currentMinutes = inputs.lunchMinutes;
+        const currentVal = parseFloat(lunchInput);
+        let calculatedPropsVal = currentVal;
+
+        if (isNaN(currentVal)) {
+            calculatedPropsVal = 0;
+        } else {
+            if (lunchUnit === 'hours') calculatedPropsVal = currentVal * 60;
+        }
+
+        if (Math.abs(calculatedPropsVal - currentMinutes) > 0.1) {
+            const displayVal = lunchUnit === 'hours'
+                ? (currentMinutes / 60).toString()
+                : currentMinutes.toString();
+            setLunchInput(displayVal);
+        }
+    }, [inputs.lunchMinutes, lunchUnit]); // eslint-disable-line react-hooks/exhaustive-deps
+
+
     const handleTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange({ ...inputs, clockInTime: e.target.value });
     };
@@ -28,10 +83,81 @@ export function CalculatorForm({ inputs, errors, onChange, onReset }: Calculator
     };
 
     const handleTreatmentChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value, 10);
-        if (!isNaN(value)) {
-            onChange({ ...inputs, totalTreatmentMinutes: value });
+        const valStr = e.target.value;
+        setTreatmentInput(valStr);
+
+        if (valStr === '') {
+            // When empty, we can internally treat as 0 for the calculator logic
+            // or just not update (preserving last valid state in parent).
+            // User requested being able to "erase". 
+            // Setting it to 0 in parent allows the calculator to run with 0.
+            onChange({ ...inputs, totalTreatmentMinutes: 0 });
+            return;
         }
+
+        const val = parseFloat(valStr);
+        if (!isNaN(val)) {
+            let minutes = val;
+            if (treatmentUnit === 'hours') {
+                minutes = val * 60;
+            }
+            // Round to nearest minute to keep data clean, or allow decimals?
+            // "minutes" usually implies integer in this domain.
+            onChange({ ...inputs, totalTreatmentMinutes: Math.round(minutes) });
+        }
+    };
+
+    const handleLunchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const valStr = e.target.value;
+        setLunchInput(valStr);
+
+        if (valStr === '') {
+            onChange({ ...inputs, lunchMinutes: 0 });
+            return;
+        }
+
+        const val = parseFloat(valStr);
+        if (!isNaN(val)) {
+            let minutes = val;
+            if (lunchUnit === 'hours') {
+                minutes = val * 60;
+            }
+            onChange({ ...inputs, lunchMinutes: Math.round(minutes) });
+        }
+    };
+
+    const handleTreatmentUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const newUnit = e.target.value as TimeUnit;
+        const currentVal = parseFloat(treatmentInput);
+
+        if (!isNaN(currentVal)) {
+            // Convert the DISPLAY value to the new unit so the minute-value stays same
+            // e.g. 60 min -> 1 hour.
+            const minutes = (treatmentUnit === 'hours') ? currentVal * 60 : currentVal;
+
+            const newDisplayVal = (newUnit === 'hours') ? (minutes / 60) : minutes;
+
+            // Format to avoid ugly float precision issues (e.g. 1.0000000001)
+            // But keep decimals if distinct
+            const formatted = parseFloat(newDisplayVal.toFixed(2)).toString();
+            setTreatmentInput(formatted);
+        }
+
+        setTreatmentUnit(newUnit);
+        // Parent state (minutes) remains unchanged basically
+    };
+
+    const handleLunchUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const newUnit = e.target.value as TimeUnit;
+        const currentVal = parseFloat(lunchInput);
+
+        if (!isNaN(currentVal)) {
+            const minutes = (lunchUnit === 'hours') ? currentVal * 60 : currentVal;
+            const newDisplayVal = (newUnit === 'hours') ? (minutes / 60) : minutes;
+            const formatted = parseFloat(newDisplayVal.toFixed(2)).toString();
+            setLunchInput(formatted);
+        }
+        setLunchUnit(newUnit);
     };
 
     const incrementProductivity = () => {
@@ -68,20 +194,26 @@ export function CalculatorForm({ inputs, errors, onChange, onReset }: Calculator
             {/* Total Treatment Minutes */}
             <div className="calculator-form__field">
                 <label htmlFor="treatmentMinutes" className="calculator-form__label">
-                    Total Treatment Minutes (Assigned)
+                    Total Treatment (Assigned)
                 </label>
                 <div className="calculator-form__inline">
                     <input
                         type="number"
                         id="treatmentMinutes"
                         className={`calculator-form__input calculator-form__input--small ${errors.totalTreatmentMinutes ? 'calculator-form__input--error' : ''}`}
-                        value={inputs.totalTreatmentMinutes}
+                        value={treatmentInput}
                         onChange={handleTreatmentChange}
                         min={0}
-                        max={720}
-                        step={15}
+                        step={treatmentUnit === 'hours' ? 0.25 : 5}
                     />
-                    <span className="calculator-form__suffix">minutes</span>
+                    <select
+                        className="calculator-form__select"
+                        value={treatmentUnit}
+                        onChange={handleTreatmentUnitChange}
+                    >
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                    </select>
                 </div>
                 {errors.totalTreatmentMinutes && (
                     <span className="calculator-form__error">{errors.totalTreatmentMinutes}</span>
@@ -91,23 +223,26 @@ export function CalculatorForm({ inputs, errors, onChange, onReset }: Calculator
             {/* Lunch Minutes */}
             <div className="calculator-form__field">
                 <label htmlFor="lunchMinutes" className="calculator-form__label">
-                    Lunch / Break Minutes
+                    Lunch / Break
                 </label>
                 <div className="calculator-form__inline">
                     <input
                         type="number"
                         id="lunchMinutes"
                         className={`calculator-form__input calculator-form__input--small ${errors.lunchMinutes ? 'calculator-form__input--error' : ''}`}
-                        value={inputs.lunchMinutes}
-                        onChange={(e) => {
-                            const val = parseInt(e.target.value, 10);
-                            if (!isNaN(val)) onChange({ ...inputs, lunchMinutes: val });
-                        }}
+                        value={lunchInput}
+                        onChange={handleLunchChange}
                         min={0}
-                        max={120}
-                        step={5}
+                        step={lunchUnit === 'hours' ? 0.25 : 5}
                     />
-                    <span className="calculator-form__suffix">minutes</span>
+                    <select
+                        className="calculator-form__select"
+                        value={lunchUnit}
+                        onChange={handleLunchUnitChange}
+                    >
+                        <option value="minutes">Minutes</option>
+                        <option value="hours">Hours</option>
+                    </select>
                 </div>
                 {errors.lunchMinutes && (
                     <span className="calculator-form__error">{errors.lunchMinutes}</span>
