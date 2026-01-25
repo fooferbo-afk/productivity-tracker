@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { get, post, put } from '../../api/client';
 import type { Facility, FacilityCreate, FacilityUpdate, FacilityListResponse } from '../../types';
 import type { RootState } from '../index';
+import { logout } from './authSlice';
 
 interface FacilitiesState {
     items: Facility[];
@@ -46,9 +47,12 @@ export const facilitiesSlice = createSlice({
         clearError: (state) => {
             state.error = null;
         },
+        resetFacilities: () => initialState,
     },
     extraReducers: (builder) => {
         builder
+            // Reset on logout
+            .addCase(logout, () => initialState)
             // Fetch
             .addCase(fetchFacilities.pending, (state) => {
                 state.status = 'loading';

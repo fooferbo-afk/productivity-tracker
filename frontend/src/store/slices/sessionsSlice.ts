@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { get, post, put, del } from '../../api/client';
 import type { Session, SessionListResponse, SessionSummary, SessionFilters, SessionCreate, SessionUpdate } from '../../types';
 import type { RootState } from '../index';
+import { logout } from './authSlice';
 
 interface SessionsState {
     items: Session[];
@@ -87,6 +88,8 @@ export const sessionsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            // Reset on logout
+            .addCase(logout, () => initialState)
             // Fetch Sessions
             .addCase(fetchSessions.pending, (state) => {
                 state.status = 'loading';
