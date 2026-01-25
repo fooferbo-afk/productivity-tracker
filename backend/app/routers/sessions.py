@@ -13,6 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.auth.jwt_validator import get_current_therapist
 from app.database import get_db
 from app.models.therapist import Therapist
+from app.models.session import Session
 from app.schemas.session import (
     SessionCreate,
     SessionListResponse,
@@ -23,6 +24,26 @@ from app.schemas.session import (
 from app.services.session_service import SessionService
 
 router = APIRouter()
+
+
+def _build_session_response(session: Session) -> SessionResponse:
+    """Helper to properly build SessionResponse from a Session model."""
+    return SessionResponse(
+        id=session.id,
+        therapist_id=session.therapist_id,
+        facility_id=session.facility_id,
+        session_date=session.session_date,
+        start_time=session.start_time,
+        end_time=session.end_time,
+        productivity_percentage=session.productivity_percentage,
+        notes=session.notes,
+        total_treatment_minutes=session.total_treatment_minutes or 0,
+        lunch_minutes=session.lunch_minutes or 0,
+        created_at=session.created_at,
+        updated_at=session.updated_at,
+        facility_name=session.facility.name if session.facility else None,
+        duration_minutes=session.duration_minutes,
+    )
 
 
 @router.get(
@@ -60,14 +81,7 @@ async def list_sessions(
     )
 
     return SessionListResponse(
-        sessions=[
-            SessionResponse(
-                **s.__dict__,
-                facility_name=s.facility.name if s.facility else None,
-                duration_minutes=s.duration_minutes,
-            )
-            for s in sessions
-        ],
+        sessions=[_build_session_response(s) for s in sessions],
         total=total,
     )
 
@@ -138,11 +152,7 @@ async def create_session(
         data=data,
     )
 
-    return SessionResponse(
-        **session.__dict__,
-        facility_name=session.facility.name if session.facility else None,
-        duration_minutes=session.duration_minutes,
-    )
+    return _build_session_response(session)
 
 
 @router.get(
@@ -173,11 +183,7 @@ async def get_session(
             detail="Session not found",
         )
 
-    return SessionResponse(
-        **session.__dict__,
-        facility_name=session.facility.name if session.facility else None,
-        duration_minutes=session.duration_minutes,
-    )
+    return _build_session_response(session)
 
 
 @router.put(
@@ -222,11 +228,7 @@ async def update_session(
 
     updated_session = await service.update(session, update_data)
 
-    return SessionResponse(
-        **updated_session.__dict__,
-        facility_name=updated_session.facility.name if updated_session.facility else None,
-        duration_minutes=updated_session.duration_minutes,
-    )
+    return _build_session_response(updated_session)
 
 
 @router.delete(

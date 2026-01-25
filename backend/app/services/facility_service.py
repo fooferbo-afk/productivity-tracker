@@ -124,6 +124,7 @@ class FacilityService:
             setattr(facility, field, value)
 
         await self.db.flush()
+        await self.db.refresh(facility)
         return facility
 
     async def archive(self, facility: Facility) -> Facility:
@@ -138,6 +139,7 @@ class FacilityService:
         """
         facility.is_archived = True
         await self.db.flush()
+        await self.db.refresh(facility)
         return facility
 
     async def unarchive(self, facility: Facility) -> Facility:
@@ -152,4 +154,5 @@ class FacilityService:
         """
         facility.is_archived = False
         await self.db.flush()
+        await self.db.refresh(facility)
         return facility

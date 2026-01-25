@@ -168,9 +168,10 @@ class SessionService:
 
         await self.db.flush()
 
-        # Reload facility if changed
-        if "facility_id" in update_dict:
-            await self.db.refresh(session, ["facility"])
+        # Fully refresh the session to get server-side computed fields (like updated_at)
+        # and also load the facility relationship for the response
+        await self.db.refresh(session)
+        await self.db.refresh(session, ["facility"])
 
         return session
 
